@@ -62,13 +62,13 @@ client.on('message', msg => {
           msg.channel.send("Recognized " + userMention(msg.author) + " came in!");
           outs.splice(o, 1);
         }
-        else if(msg.content.match(regyes) != null) {
+        else if(msg.content.match(regno) != null) {
           msg.channel.send("Recognized " + userMention(msg.author) + " came in!");
           outs.splice(o, 1);
         }
-        else if(msg.content.match(regno) != null) {
+        else if(msg.content.match(regyes) != null) {
           msg.channel.send("Keeping " + userMention(msg.author) + " out!");
-          outs.splice(o, 1);
+	  o.timeout = setTimeout(itsTime, timeBetweenPings, o);
         }
         else if(msg.content.trim().toLowerCase() == ".outs") {
           let theMsg = "Currently out on a run: ";
