@@ -71,7 +71,7 @@ client.on('message', msg => {
         }
         else if(msg.content.match(regyes) != null) {
 	  let ll = msg.content.match(regyes)[1] || timeBetweenPings / 60000;
-          msg.channel.send("Keeping " + userMention(msg.author) + " out! Pinging you back in " + ll + " minutes!);
+          msg.channel.send("Keeping " + userMention(msg.author) + " out! Pinging you back in " + ll + " minutes!");
 	  if(o.timeout != null)
 	    clearTimeout(o.timeout);
 	  o.timeout = setTimeout(itsTime, ll * 60000, o);
