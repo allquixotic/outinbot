@@ -1,13 +1,14 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
 const token = process.env.DISCORD_BOT_SECRET;
-const channels = require('./channels.json');
+const settings = require('./channels.json') || {};
+const channels = settings.channels || ["missionaries"];
 const regout = /^[^A-Za-z]*out+[^A-Za-z]*$/i;
 const regin = /^[^A-Za-z]*in+[^A-Za-z]*$/i;
 const regyes = /^[^A-Za-z]*yes+[^A-Za-z]*$/i;
 const regno = /^[^A-Za-z]*no+[^A-Za-z]*$/i;
 const outs = [];
-const timeBetweenPings = 1000 * 60 * 30;
+const timeBetweenPings = settings.timeBetweenPings || 1000 * 60 * 30;
 
 function getOut(auid, chid) {
     let theOneInTheOuts = null;
@@ -65,9 +66,13 @@ client.on('message', msg => {
         else if(msg.content.match(regno) != null) {
           msg.channel.send("Recognized " + userMention(msg.author) + " came in!");
           outs.splice(o, 1);
+	  if(o.timeout != null) 
+	    clearTimeout(o.timeout);
         }
         else if(msg.content.match(regyes) != null) {
           msg.channel.send("Keeping " + userMention(msg.author) + " out!");
+	  if(o.timeout != null)
+	    clearTimeout(o.timeout);
 	  o.timeout = setTimeout(itsTime, timeBetweenPings, o);
         }
         else if(msg.content.trim().toLowerCase() == ".outs") {
