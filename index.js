@@ -59,13 +59,7 @@ client.on('message', msg => {
           poosh.timeout = setTimeout(itsTime, timeBetweenPings, poosh);
           msg.channel.send("Recognized " + userMention(msg.author) + " went out!");
         }
-        else if (msg.content.match(regin) != null && o != null) {
-          msg.channel.send("Recognized " + userMention(msg.author) + " came in!");
-          outs.splice(o, 1);
-	  if(o.timeout != null) 
-	    clearTimeout(o.timeout);
-        }
-        else if(msg.content.match(regno) != null) {
+        else if ((msg.content.match(regin) != null || msg.content.match(regno) != null) && o != null) {
           msg.channel.send("Recognized " + userMention(msg.author) + " came in!");
           outs.splice(o, 1);
 	  if(o.timeout != null) 
