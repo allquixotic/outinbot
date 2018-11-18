@@ -5,7 +5,7 @@ const settings = require('./settings.json') || {};
 const channels = settings.channels || ["missionaries"];
 const regout = /^[^A-Za-z]*out+[^A-Za-z]*$/i;
 const regin = /^[^A-Za-z]*in+[^A-Za-z]*$/i;
-const regyes = /^[^A-Za-z]*yes+[^A-Za-z]*$/i;
+const regyes = /^[^A-Za-z]*yes+\s*(\d+)?[^A-Za-z]*$/i;
 const regno = /^[^A-Za-z]*no+[^A-Za-z]*$/i;
 const outs = [];
 const timeBetweenPings = settings.timeBetweenPings || 1000 * 60 * 30;
@@ -70,10 +70,11 @@ client.on('message', msg => {
 	    clearTimeout(o.timeout);
         }
         else if(msg.content.match(regyes) != null) {
-          msg.channel.send("Keeping " + userMention(msg.author) + " out!");
+	  let ll = msg.content.match(regyes)[1] || timeBetweenPings / 60000;
+          msg.channel.send("Keeping " + userMention(msg.author) + " out! Pinging you back in " + ll + " minutes!);
 	  if(o.timeout != null)
 	    clearTimeout(o.timeout);
-	  o.timeout = setTimeout(itsTime, timeBetweenPings, o);
+	  o.timeout = setTimeout(itsTime, ll * 60000, o);
         }
         else if(msg.content.trim().toLowerCase() == ".outs") {
           let theMsg = "Currently out on a run: ";
