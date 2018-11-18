@@ -1,7 +1,7 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
 const token = process.env.DISCORD_BOT_SECRET;
-const channels = require('channels.json');
+const channels = require('./channels.json');
 const regout = /^[^A-Za-z]*out+[^A-Za-z]*$/i;
 const regin = /^[^A-Za-z]*in+[^A-Za-z]*$/i;
 const regyes = /^[^A-Za-z]*yes+[^A-Za-z]*$/i;
