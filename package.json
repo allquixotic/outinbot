@@ -1,0 +1,22 @@
+{
+  "name": "outinbot",
+  "version": "1.0.0",
+  "description": "Discord bot for recruitment out/in tracker.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/allquixotic/outinbot.git"
+  },
+  "author": "Sean McNamara <smcnam@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/allquixotic/outinbot/issues"
+  },
+  "homepage": "https://github.com/allquixotic/outinbot#readme",
+  "dependencies": {
+    "discord.js": "^11.4.2"
+  }
+}
