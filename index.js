@@ -23,11 +23,11 @@ function itsTime(ou) {
   let toot = getOut(ou.who.id, ou.where.id);
   if(toot != null) {
     if(toot.tries > 0) {
-      ou.where.send("Due to no response, assuming " + userMention(msg.author) + " is IN.");
+      ou.where.send("Due to no response, assuming " + userMention(toot.who) + " is IN.");
       outs.splice(toot, 1);
     }
     else {
-      ou.where.send("Hey " + userMention(msg.author) + " are you still out? Reply yes or no, please!");
+      ou.where.send("Hey " + userMention(toot.who) + " are you still out? Reply yes or no, please!");
       setTimeout(itsTime, timeBetweenPings, ou);
     }
     toot.tries = toot.tries + 1;
