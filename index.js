@@ -29,7 +29,7 @@ function itsTime(ou) {
     }
     else {
       ou.where.send("Hey " + userMention(toot.who) + " are you still out? Reply yes or no, please!");
-      setTimeout(itsTime, timeBetweenPings, ou);
+      ou.timeout = setTimeout(itsTime, timeBetweenPings, ou);
     }
     toot.tries = toot.tries + 1;
   }
