@@ -2,3 +2,4 @@ node_modules/
 .env
 channels.json
 package-lock.json
+settings.json
