@@ -62,6 +62,8 @@ client.on('message', msg => {
         else if (msg.content.match(regin) != null && o != null) {
           msg.channel.send("Recognized " + userMention(msg.author) + " came in!");
           outs.splice(o, 1);
+	  if(o.timeout != null) 
+	    clearTimeout(o.timeout);
         }
         else if(msg.content.match(regno) != null) {
           msg.channel.send("Recognized " + userMention(msg.author) + " came in!");
@@ -75,6 +77,7 @@ client.on('message', msg => {
 	  if(o.timeout != null)
 	    clearTimeout(o.timeout);
 	  o.timeout = setTimeout(itsTime, ll * 60000, o);
+	  o.tries = 0;
         }
         else if(msg.content.trim().toLowerCase() == ".outs") {
           let theMsg = "Currently out on a run: ";
