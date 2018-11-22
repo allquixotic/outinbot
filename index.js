@@ -32,7 +32,7 @@ function itsTime(ou) {
       outs.splice(toot, 1);
     }
     else {
-      ou.where.send("Hey " + userMention(toot.who) + " are you still out? Reply yes or no, please!");
+      ou.where.send("Hey " + userMention(toot.who) + " are you still out? Reply yes or no within " + (timeBetweenPings / 60000) + " minutes, please!");
       ou.timeout = setTimeout(itsTime, timeBetweenPings, ou);
     }
     toot.tries = toot.tries + 1;
@@ -58,6 +58,7 @@ client.on('message', msg => {
               who: msg.author,
               where: msg.channel,
               when: (new Date().getTime()),
+	      timerStarted: (new Date().getTime()),
               tries: 0
           };
           outs.push(poosh);
@@ -76,12 +77,14 @@ client.on('message', msg => {
 	  if(o.timeout != null)
 	    clearTimeout(o.timeout);
 	  o.timeout = setTimeout(itsTime, ll * 60000, o);
+	  o.timerStarted = (new Date().getTime());
 	  o.tries = 0;
         }
         else if(msg.content.trim().toLowerCase() == ".outs") {
           let theMsg = "Currently out on a run: ";
           outs.forEach(outt => {
-            theMsg += outt.who.username + " out since " + new Date(outt.when).toLocaleString("en-us", {timeZone: "America/New_York"}) + ", next ping in " + (getTimeLeft(outt.timeout)/60) + " minutes. ";
+            theMsg += outt.who.username + " out since " + new Date(outt.when).toLocaleString("en-us", {timeZone: "America/New_York"}) + ", next ping in " +
+		    (new Date(((outt.timerStarted + outt.timeout._idleTimeout) - new Date().getTime())) / 60000) + " minutes. ";
           });
           msg.channel.send(theMsg);
         }
