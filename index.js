@@ -3,7 +3,7 @@ const client = new Discord.Client();
 const token = process.env.DISCORD_BOT_SECRET;
 const settings = require('./settings.json') || {};
 const channels = settings.channels || ["missionaries"];
-const regout = /^[^A-Za-z]*out+[^A-Za-z]*$/i;
+const regout = /^[^A-Za-z]*out+\s*(\d+)?[^A-Za-z]*$/i;
 const regin = /^[^A-Za-z]*in+[^A-Za-z]*$/i;
 const regyes = /^[^A-Za-z]*yes+\s*(\d+)?[^A-Za-z]*$/i;
 const regno = /^[^A-Za-z]*no+[^A-Za-z]*$/i;
@@ -49,6 +49,7 @@ client.on('message', msg => {
         //console.log('Received msg in ' + msg.channel.name);
         let o = getOut(msg.author.id, msg.channel.id);
         if (msg.content.match(regout) != null && o == null) {
+	  let tbp = msg.content.match(regout)[1] || (timeBetweenPings / 60000);
           let poosh = {
               who: msg.author,
               where: msg.channel,
@@ -56,7 +57,7 @@ client.on('message', msg => {
               tries: 0
           };
           outs.push(poosh);
-          poosh.timeout = setTimeout(itsTime, timeBetweenPings, poosh);
+          poosh.timeout = setTimeout(itsTime, tbp * 60000, poosh);
           msg.channel.send("Recognized " + userMention(msg.author) + " went out!");
         }
         else if ((msg.content.match(regin) != null || msg.content.match(regno) != null) && o != null) {
