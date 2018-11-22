@@ -10,6 +10,10 @@ const regno = /^[^A-Za-z]*no+[^A-Za-z]*$/i;
 const outs = [];
 const timeBetweenPings = settings.timeBetweenPings || 1000 * 60 * 30;
 
+function getTimeLeft(timeout) {
+    return Math.ceil((timeout._idleStart + timeout._idleTimeout - Date.now()) / 1000);
+}
+
 function getOut(auid, chid) {
     let theOneInTheOuts = null;
     outs.forEach(outt => {
@@ -58,10 +62,10 @@ client.on('message', msg => {
           };
           outs.push(poosh);
           poosh.timeout = setTimeout(itsTime, tbp * 60000, poosh);
-          msg.channel.send("Recognized " + userMention(msg.author) + " went out!");
+          msg.channel.send(userMention(msg.author) + " is out; will ping you in " + tbp + " minutes.");
         }
         else if ((msg.content.match(regin) != null || msg.content.match(regno) != null) && o != null) {
-          msg.channel.send("Recognized " + userMention(msg.author) + " came in!");
+          msg.channel.send("userMention(msg.author) + " came in!");
           outs.splice(o, 1);
 	  if(o.timeout != null) 
 	    clearTimeout(o.timeout);
@@ -77,7 +81,7 @@ client.on('message', msg => {
         else if(msg.content.trim().toLowerCase() == ".outs") {
           let theMsg = "Currently out on a run: ";
           outs.forEach(outt => {
-            theMsg += outt.who.username + " ";
+            theMsg += outt.who.username + " out since " + new Date(outt.when).toLocaleString("en-us", {timeZone: "America/New_York"}) + ", next ping in " + (getTimeLeft(outt.timeout)/60) + " minutes. ";
           });
           msg.channel.send(theMsg);
         }
