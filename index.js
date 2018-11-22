@@ -10,10 +10,6 @@ const regno = /^[^A-Za-z]*no+[^A-Za-z]*$/i;
 const outs = [];
 const timeBetweenPings = settings.timeBetweenPings || 1000 * 60 * 30;
 
-function getTimeLeft(timeout) {
-    return Math.ceil((timeout._idleStart + timeout._idleTimeout - Date.now()) / 1000);
-}
-
 function getOut(auid, chid) {
     let theOneInTheOuts = null;
     outs.forEach(outt => {
@@ -84,7 +80,7 @@ client.on('message', msg => {
           let theMsg = "Currently out on a run: ";
           outs.forEach(outt => {
             theMsg += outt.who.username + " out since " + new Date(outt.when).toLocaleString("en-us", {timeZone: "America/New_York"}) + ", next ping in " +
-		    (new Date(((outt.timerStarted + outt.timeout._idleTimeout) - new Date().getTime())) / 60000) + " minutes. ";
+		    Math.ceil((new Date(((outt.timerStarted + outt.timeout._idleTimeout) - new Date().getTime())) / 60000)) + " minutes. ";
           });
           msg.channel.send(theMsg);
         }
