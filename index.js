@@ -87,4 +87,5 @@ client.on('message', msg => {
     }
 });
 
+client.on('error', console.error);
 client.login(token);
