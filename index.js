@@ -64,10 +64,10 @@ client.on('message', msg => {
         else if ((msg.content.match(regin) != null || msg.content.match(regno) != null) && o != null) {
           msg.channel.send(userMention(msg.author) + " came in!");
           outs.splice(o, 1);
-	  if(o.timeout != null) 
+	  if(o != null && o.timeout != null) 
 	    clearTimeout(o.timeout);
         }
-        else if(msg.content.match(regyes) != null) {
+        else if(msg.content.match(regyes) != null && o != null) {
 	  let ll = msg.content.match(regyes)[1] || timeBetweenPings / 60000;
           msg.channel.send("Keeping " + userMention(msg.author) + " out! Pinging you back in " + ll + " minutes.");
 	  if(o.timeout != null)
