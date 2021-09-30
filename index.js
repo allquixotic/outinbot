@@ -13,7 +13,7 @@ const timeBetweenPings = settings.timeBetweenPings || 1000 * 60 * 30;
 function getOut(auid, chid) {
   let theOneInTheOuts = null;
   outs.forEach(outt => {
-    if (outt.who.id == auid && outt.where.id == chid) {
+    if (outt.who.id == auid && outt.where == chid) {
       theOneInTheOuts = outt;
     }
   });
@@ -83,8 +83,10 @@ client.on('message', msg => {
     else if (msg.content.trim().toLowerCase() == ".outs") {
       let theMsg = "Currently out on a run: ";
       outs.forEach(outt => {
+        if(outt.where == msg.channel.id) {
         theMsg += outt.who.username + " out since " + new Date(outt.when).toLocaleString("en-us", { timeZone: "America/New_York" }) + ", next ping in " +
           Math.ceil((new Date(((outt.timerStarted + outt.timeout._idleTimeout) - new Date().getTime())) / 60000)) + " minutes. ";
+        };
       });
       msg.channel.send(theMsg);
     }
