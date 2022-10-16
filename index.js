@@ -1,5 +1,5 @@
-const Discord = require('discord.js');
-const client = new Discord.Client();
+const { Client, GatewayIntentBits } = require('discord.js');
+const client = new Client({intents: [GatewayIntentBits.MessageContent]});
 const token = process.env.DISCORD_BOT_SECRET;
 const settings = require('./settings.json') || {};
 const channels = settings.channels || ["missionaries"];
