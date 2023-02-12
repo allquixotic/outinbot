@@ -1,5 +1,5 @@
 const { Client, GatewayIntentBits } = require('discord.js');
-const client = new Client({intents: [GatewayIntentBits.MessageContent]});
+const client = new Client({intents: [GatewayIntentBits.MessageContent, GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildMembers]});
 const token = process.env.DISCORD_BOT_SECRET;
 const settings = require('./settings.json') || {};
 const channels = settings.channels || ["missionaries"];
@@ -48,7 +48,7 @@ client.on('ready', () => {
   console.log(client.user.username);
 });
 
-client.on('message', msg => {
+client.on('messageCreate', msg => {
   if (msg.author.id != client.user.id && channels.includes(msg.channel.name)) {
     //console.log('Received msg in ' + msg.channel.name);
     let o = getOut(msg.author.id, msg.channel.id);
@@ -63,6 +63,7 @@ client.on('message', msg => {
       };
       outs.push(poosh);
       poosh.timeout = setTimeout(itsTime, tbp * 60000, poosh);
+      console.log("Received out");
       msg.channel.send(userMention(msg.author) + " is out; will ping you in " + tbp + " minutes.");
     }
     else if ((msg.content.match(regin) != null || msg.content.match(regno) != null) && o != null) {
